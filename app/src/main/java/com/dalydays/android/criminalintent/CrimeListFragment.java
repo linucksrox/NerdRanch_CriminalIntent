@@ -87,7 +87,7 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(getActivity(), mCrime.getTitle() + " Clicked!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), mCrime.getTitle() + " Clicked! Contact the police!", Toast.LENGTH_SHORT).show();
         }
     }
 
