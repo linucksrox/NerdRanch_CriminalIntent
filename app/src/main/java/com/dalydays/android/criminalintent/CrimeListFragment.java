@@ -13,7 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.UUID;
 
 public class CrimeListFragment extends Fragment {
 
@@ -39,7 +40,7 @@ public class CrimeListFragment extends Fragment {
 
     private void updateUI() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
-        List<Crime> crimes = crimeLab.getCrimes();
+        LinkedHashMap<UUID, Crime> crimes = crimeLab.getCrimes();
 
         if (mAdapter == null) {
             mAdapter = new CrimeAdapter(crimes);
@@ -88,9 +89,9 @@ public class CrimeListFragment extends Fragment {
     }
 
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
-        private List<Crime> mCrimes;
+        private LinkedHashMap<UUID, Crime> mCrimes;
 
-        public CrimeAdapter(List<Crime> crimes) {
+        public CrimeAdapter(LinkedHashMap<UUID, Crime> crimes) {
             mCrimes = crimes;
         }
 
@@ -103,7 +104,7 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull CrimeHolder holder, int position) {
-            Crime crime = mCrimes.get(position);
+            Crime crime = mCrimes.get(mCrimes.keySet().toArray()[position]);
             holder.bind(crime);
         }
 
