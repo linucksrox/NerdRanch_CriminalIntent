@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TimePicker;
 
+import java.util.Calendar;
+
 public class TimePickerFragment extends DialogFragment {
 
     public static final String EXTRA_HOUR = "com.dalydays.android.criminalintent.hour";
@@ -21,38 +23,17 @@ public class TimePickerFragment extends DialogFragment {
     private static final String ARG_MINUTE = "minute";
     private TimePicker mTimePicker;
 
-    public static TimePickerFragment newInstance(int hour, int minute) {
-        Bundle args = new Bundle();
-        args.putInt(ARG_HOUR, hour);
-        args.putInt(ARG_MINUTE, minute);
-
-        TimePickerFragment fragment = new TimePickerFragment();
-        fragment.setArguments(args);
-
-        return fragment;
+    public static TimePickerFragment newInstance() {
+        return new TimePickerFragment();
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        int hour = getArguments().getInt(ARG_HOUR);
-        int minute = getArguments().getInt(ARG_MINUTE);
-
         View v = LayoutInflater.from(getActivity())
                 .inflate(R.layout.dialog_time, null);
 
         mTimePicker = v.findViewById(R.id.dialog_time_picker);
-        // TimePicker's setHour() and setMinute() methods weren't added until API 23, otherwise
-        // we need to use setCurrentHour() and setCurrentMinute()
-        if (Build.VERSION.SDK_INT < 23) {
-            mTimePicker.setCurrentHour(hour);
-            mTimePicker.setCurrentMinute(minute);
-        }
-        else {
-            mTimePicker.setHour(hour);
-            mTimePicker.setMinute(minute);
-        }
-        mTimePicker.setIs24HourView(android.text.format.DateFormat.is24HourFormat(getContext()));
 
         return new AlertDialog.Builder(getActivity())
                 .setView(v)

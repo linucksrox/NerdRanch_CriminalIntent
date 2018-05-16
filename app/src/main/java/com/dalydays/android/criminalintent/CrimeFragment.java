@@ -123,9 +123,7 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentManager manager = getFragmentManager();
-                int currentHour = Calendar.getInstance().get(Calendar.HOUR);
-                int currentMinute = Calendar.getInstance().get(Calendar.MINUTE);
-                TimePickerFragment dialog = TimePickerFragment.newInstance(currentHour, currentMinute);
+                TimePickerFragment dialog = TimePickerFragment.newInstance();
                 dialog.setTargetFragment(CrimeFragment.this, REQUEST_TIME);
                 dialog.show(manager, DIALOG_TIME);
             }
