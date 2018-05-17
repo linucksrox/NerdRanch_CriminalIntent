@@ -9,18 +9,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TimePicker;
-
-import java.util.Calendar;
 
 public class TimePickerFragment extends DialogFragment {
 
     public static final String EXTRA_HOUR = "com.dalydays.android.criminalintent.hour";
     public static final String EXTRA_MINUTE = "com.dalydays.android.criminalintent.minute";
-    private static final String ARG_HOUR = "hour";
-    private static final String ARG_MINUTE = "minute";
     private TimePicker mTimePicker;
 
     public static TimePickerFragment newInstance() {
@@ -34,6 +31,9 @@ public class TimePickerFragment extends DialogFragment {
                 .inflate(R.layout.dialog_time, null);
 
         mTimePicker = v.findViewById(R.id.dialog_time_picker);
+
+        // Get system preference for 24 hour or 12 hour (AM/PM) view
+        mTimePicker.setIs24HourView(DateFormat.is24HourFormat(getContext()));
 
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
