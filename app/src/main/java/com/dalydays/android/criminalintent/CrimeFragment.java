@@ -127,7 +127,7 @@ public class CrimeFragment extends Fragment {
                 // Pass in the hour/minute currently set on the crime's date
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(mCrime.getDate());
-                int hour = calendar.get(Calendar.HOUR_OF_DAY);      // 24 hour hour format 0-23
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);      // 24 hour hour format 0-23, this works for both 12 and 24 hour TimePicker modes
 //                int hour = calendar.get(Calendar.HOUR);      // 12 hour hour format 0-11
                 int minute = calendar.get(Calendar.MINUTE);
                 TimePickerFragment dialog = TimePickerFragment.newInstance(hour, minute);
