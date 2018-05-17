@@ -123,7 +123,15 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentManager manager = getFragmentManager();
-                TimePickerFragment dialog = TimePickerFragment.newInstance();
+
+                // Pass in the hour/minute currently set on the crime's date
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(mCrime.getDate());
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);      // 24 hour hour format 0-23
+//                int hour = calendar.get(Calendar.HOUR);      // 12 hour hour format 0-11
+                int minute = calendar.get(Calendar.MINUTE);
+                TimePickerFragment dialog = TimePickerFragment.newInstance(hour, minute);
+
                 dialog.setTargetFragment(CrimeFragment.this, REQUEST_TIME);
                 dialog.show(manager, DIALOG_TIME);
             }
