@@ -49,7 +49,7 @@ public class TimePickerFragment extends DialogFragment {
                 .inflate(R.layout.dialog_time, null);
 
         mTimePicker = v.findViewById(R.id.dialog_time_picker);
-        if (Build.VERSION.SDK_INT < 23) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             mTimePicker.setCurrentHour(hour);
             mTimePicker.setCurrentMinute(minute);
         }
@@ -69,7 +69,7 @@ public class TimePickerFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         // send time back to calling fragment
                         int hour, minute;
-                        if (Build.VERSION.SDK_INT < 23) {
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                             hour = mTimePicker.getCurrentHour();
                             minute = mTimePicker.getCurrentMinute();
                         }
