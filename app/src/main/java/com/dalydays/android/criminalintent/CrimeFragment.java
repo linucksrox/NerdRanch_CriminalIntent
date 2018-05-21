@@ -37,6 +37,7 @@ public class CrimeFragment extends Fragment {
     private Button mDateButton;
     private Button mTimeButton;
     private CheckBox mSolvedCheckBox;
+    private boolean mIsLargeLayout;
 
     public static CrimeFragment newInstance(UUID crimeId) {
         Bundle args = new Bundle();
@@ -84,6 +85,7 @@ public class CrimeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getResources().getBoolean(R.bool.large_layout);
         UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
     }
@@ -117,15 +119,19 @@ public class CrimeFragment extends Fragment {
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                // Create and show new date dialog
-//                FragmentManager manager = getFragmentManager();
-//                DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
-//                dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
-//                dialog.show(manager, DIALOG_DATE);
-
-                Log.d("CrimeFragment", "Starting DatePickerActivity for result...");
-                Intent intent = DatePickerActivity.newIntent(getActivity(), mCrime.getDate());
-                startActivityForResult(intent, REQUEST_DATE);
+                if (mIsLargeLayout) {
+                    // Create and show new date dialog
+                    FragmentManager manager = getFragmentManager();
+                    DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
+                    dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
+                    dialog.show(manager, DIALOG_DATE);
+                }
+                else {
+                    // show the date picker as a full screen activity
+                    Log.d("CrimeFragment", "Starting DatePickerActivity for result...");
+                    Intent intent = DatePickerActivity.newIntent(getActivity(), mCrime.getDate());
+                    startActivityForResult(intent, REQUEST_DATE);
+                }
             }
         });
 

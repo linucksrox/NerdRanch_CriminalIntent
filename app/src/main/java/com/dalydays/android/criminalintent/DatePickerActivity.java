@@ -7,7 +7,7 @@ import android.util.Log;
 
 import java.util.Date;
 
-public class DatePickerActivity extends SingleFragmentActivity implements DatePickerFragment.OnDateSelectedListener {
+public class DatePickerActivity extends SingleFragmentActivity {
 
     private static final String EXTRA_DATE = "com.dalydays.android.criminalintent.date";
 
@@ -22,11 +22,5 @@ public class DatePickerActivity extends SingleFragmentActivity implements DatePi
         Log.d("DatePickerActivity", "Creating DatePickerFragment...");
         Date date = (Date) getIntent().getSerializableExtra(EXTRA_DATE);
         return DatePickerFragment.newInstance(date);
-    }
-
-    @Override
-    public void onDateSelected(Date date) {
-        // set results for calling fragment, finish activity
-        finish();
     }
 }
