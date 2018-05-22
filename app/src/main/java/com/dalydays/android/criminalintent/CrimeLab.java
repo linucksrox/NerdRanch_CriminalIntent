@@ -59,6 +59,14 @@ public class CrimeLab {
         return new CrimeCursorWrapper(cursor);
     }
 
+    public void deleteCrime(UUID id) {
+        for (int i = 0; i < mCrimes.size(); i++) {
+            if (mCrimes.get(i).getId().equals(id)) {
+                mCrimes.remove(i);
+            }
+        }
+    }
+
     public List<Crime> getCrimes() {
         List<Crime> crimes = new ArrayList<>();
 
