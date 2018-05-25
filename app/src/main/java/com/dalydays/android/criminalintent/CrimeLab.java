@@ -60,11 +60,7 @@ public class CrimeLab {
     }
 
     public void deleteCrime(UUID id) {
-        for (int i = 0; i < mCrimes.size(); i++) {
-            if (mCrimes.get(i).getId().equals(id)) {
-                mCrimes.remove(i);
-            }
-        }
+        // TODO: delete crimes from SQLite database
     }
 
     public List<Crime> getCrimes() {
