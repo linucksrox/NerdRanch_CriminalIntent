@@ -60,7 +60,7 @@ public class CrimeLab {
     }
 
     public void deleteCrime(UUID id) {
-        // TODO: delete crimes from SQLite database
+        mDatabase.delete(CrimeTable.NAME, CrimeTable.Cols.UUID + " = ?", new String[] {id.toString()});
     }
 
     public List<Crime> getCrimes() {
@@ -83,7 +83,7 @@ public class CrimeLab {
 
     public Crime getCrime(UUID id) {
         CrimeCursorWrapper cursor = queryCrimes(CrimeTable.Cols.UUID + " = ?",
-                new String[]{id.toString()});
+                new String[] {id.toString()});
 
         try {
             if (cursor.getCount() == 0) {
