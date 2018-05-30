@@ -23,6 +23,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import com.dalydays.android.criminalintent.database.CrimeDbSchema;
+
 import java.util.Date;
 import java.util.UUID;
 
@@ -65,7 +67,10 @@ public class CrimeFragment extends Fragment {
             Uri contactUri = data.getData();
 
             // Specify which fields you want your query to return values for
-            String[] queryFields = new String[] {ContactsContract.Contacts.DISPLAY_NAME};
+            String[] queryFields = new String[] {
+                    ContactsContract.Contacts._ID,
+                    ContactsContract.Contacts.DISPLAY_NAME
+            };
 
             // Perform your query - the contactUri is like a "where" clause here
             Cursor c = getActivity().getContentResolver().query(contactUri, queryFields, null, null, null);
@@ -78,9 +83,17 @@ public class CrimeFragment extends Fragment {
 
                 // Pull out the first column of the first row of data - that is your suspect's name
                 c.moveToFirst();
-                String suspect = c.getString(0);
-                mCrime.setSuspect(suspect);
-                mSuspectButton.setText(suspect);
+                String[] columnNames = c.getColumnNames();
+                for (int i = 0; i < columnNames.length; i++) {
+                    if (columnNames[i] == CrimeDbSchema.CrimeTable.Cols.SUSPECT) {
+                        String suspect = c.getString(i);
+                        mCrime.setSuspect(suspect);
+                        mSuspectButton.setText(suspect);
+                    }
+                    if (columnNames[i] == CrimeDbSchema.CrimeTable.Cols.SUSPECT_ID) {
+                        mCrime.setSuspectID(c.getString(i));
+                    }
+                }
 
                 // Enable call suspect button
                 mCallSuspectButton.setEnabled(true);
@@ -96,7 +109,7 @@ public class CrimeFragment extends Fragment {
             // Get contact ID
             Uri contactUri = data.getData();
 
-            String[] queryFields = new String[] {}
+            
         }
     }
 
