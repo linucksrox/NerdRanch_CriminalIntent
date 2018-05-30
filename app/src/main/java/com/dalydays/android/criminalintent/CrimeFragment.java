@@ -15,7 +15,6 @@ import android.support.v4.app.ShareCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +22,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-
-import com.dalydays.android.criminalintent.database.CrimeDbSchema;
 
 import java.util.Date;
 import java.util.UUID;
@@ -94,16 +91,6 @@ public class CrimeFragment extends Fragment {
             } finally {
                 c.close();
             }
-        } else if (requestCode == REQUEST_PHONE_NUMBER && data != null) {
-            // TODO: pull the phone number out of the contacts database
-            // TODO: create an implicit intent with a phone URI like this:
-            //       Uri number = Uri.parse("tel:5551234");
-            // Using Intent.ACTION_DIAL or Intent.ACTION_CALL (open dialer or immediately place call)
-
-            // Get contact ID
-            Uri contactUri = data.getData();
-
-
         }
     }
 
@@ -217,8 +204,33 @@ public class CrimeFragment extends Fragment {
         mCallSuspectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: get contact ID from suspect in order to query the phone number using
-                // ContactsContract.CommonDataKinds.Phone
+                // pull the phone number out of the contacts database
+                Cursor phoneNumberCursor = getContext().getContentResolver()
+                        .query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                                null,
+                                ContactsContract.Contacts._ID + " = ?",
+                                new String[] {mCrime.getSuspectID()},
+                                null
+                        );
+                String phoneNumber = "";
+                if (phoneNumberCursor.moveToFirst()) {
+                    phoneNumber = phoneNumberCursor.getString(
+                            phoneNumberCursor.getColumnIndex(
+                                    ContactsContract.CommonDataKinds.Phone.NUMBER
+                            )
+                    );
+                }
+
+                // create an implicit intent with a phone URI like this:
+                //       Uri number = Uri.parse("tel:5551234");
+                // Using Intent.ACTION_DIAL or Intent.ACTION_CALL (open dialer or immediately place call)
+                Uri number = Uri.parse("tel:" + phoneNumber);
+                try {
+                    Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+                    startActivity(callIntent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
