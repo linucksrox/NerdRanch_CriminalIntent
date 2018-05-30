@@ -15,6 +15,7 @@ import android.support.v4.app.ShareCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,19 +82,12 @@ public class CrimeFragment extends Fragment {
                     return;
                 }
 
-                // Pull out the first column of the first row of data - that is your suspect's name
+                // Pull out the two columns of the first row of data - that is your contact ID and name
                 c.moveToFirst();
-                String[] columnNames = c.getColumnNames();
-                for (int i = 0; i < columnNames.length; i++) {
-                    if (columnNames[i] == CrimeDbSchema.CrimeTable.Cols.SUSPECT) {
-                        String suspect = c.getString(i);
-                        mCrime.setSuspect(suspect);
-                        mSuspectButton.setText(suspect);
-                    }
-                    if (columnNames[i] == CrimeDbSchema.CrimeTable.Cols.SUSPECT_ID) {
-                        mCrime.setSuspectID(c.getString(i));
-                    }
-                }
+                mCrime.setSuspectID(c.getString(0));
+                String suspect = c.getString(1);
+                mCrime.setSuspect(suspect);
+                mSuspectButton.setText(suspect);
 
                 // Enable call suspect button
                 mCallSuspectButton.setEnabled(true);
@@ -109,7 +103,7 @@ public class CrimeFragment extends Fragment {
             // Get contact ID
             Uri contactUri = data.getData();
 
-            
+
         }
     }
 
