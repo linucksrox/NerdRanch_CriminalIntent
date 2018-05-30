@@ -32,6 +32,7 @@ public class CrimeFragment extends Fragment {
     private static final String DIALOG_DATE = "DialogDate";
     private static final int REQUEST_DATE = 0;
     private static final int REQUEST_CONTACT = 1;
+    private static final int REQUEST_PHONE_NUMBER = 2;
 
     private Crime mCrime;
     private EditText mTitleField;
@@ -39,6 +40,7 @@ public class CrimeFragment extends Fragment {
     private CheckBox mSolvedCheckBox;
     private Button mSuspectButton;
     private Button mSendCrimeReportButton;
+    private Button mCallSuspectButton;
 
     public static CrimeFragment newInstance(UUID crimeId) {
         Bundle args = new Bundle();
@@ -79,9 +81,22 @@ public class CrimeFragment extends Fragment {
                 String suspect = c.getString(0);
                 mCrime.setSuspect(suspect);
                 mSuspectButton.setText(suspect);
+
+                // Enable call suspect button
+                mCallSuspectButton.setEnabled(true);
             } finally {
                 c.close();
             }
+        } else if (requestCode == REQUEST_PHONE_NUMBER && data != null) {
+            // TODO: pull the phone number out of the contacts database
+            // TODO: create an implicit intent with a phone URI like this:
+            //       Uri number = Uri.parse("tel:5551234");
+            // Using Intent.ACTION_DIAL or Intent.ACTION_CALL (open dialer or immediately place call)
+
+            // Get contact ID
+            Uri contactUri = data.getData();
+
+            String[] queryFields = new String[] {}
         }
     }
 
@@ -191,10 +206,26 @@ public class CrimeFragment extends Fragment {
             mSuspectButton.setText(mCrime.getSuspect());
         }
 
+        mCallSuspectButton = v.findViewById(R.id.call_suspect);
+        mCallSuspectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: get contact ID from suspect in order to query the phone number using
+                // ContactsContract.CommonDataKinds.Phone
+            }
+        });
+
+        // If there is no suspect, disable the call button
+        if (mCrime.getSuspect() == null) {
+            mCallSuspectButton.setEnabled(false);
+        }
+
         // Check if a contact picking app is available, otherwise disable the choose suspect button
+        // and the call suspect button
         PackageManager packageManager = getActivity().getPackageManager();
         if (packageManager.resolveActivity(pickContact, PackageManager.MATCH_DEFAULT_ONLY) == null) {
             mSuspectButton.setEnabled(false);
+            mCallSuspectButton.setEnabled(false);
         }
 
         return v;
