@@ -1,5 +1,6 @@
 package com.dalydays.android.criminalintent;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,9 +10,11 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
@@ -32,7 +35,7 @@ public class CrimeFragment extends Fragment {
     private static final String DIALOG_DATE = "DialogDate";
     private static final int REQUEST_DATE = 0;
     private static final int REQUEST_CONTACT = 1;
-    private static final int REQUEST_PHONE_NUMBER = 2;
+    private static final int READ_CONTACTS_REQUEST_CODE = 0;
 
     private Crime mCrime;
     private EditText mTitleField;
@@ -98,6 +101,19 @@ public class CrimeFragment extends Fragment {
                 mCallSuspectButton.setEnabled(true);
             } finally {
                 c.close();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch(requestCode) {
+            case READ_CONTACTS_REQUEST_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // cool, permission was granted, so enable that dang button!
+                    mCallSuspectButton.setEnabled(true);
+                }
+                return;
             }
         }
     }
@@ -217,7 +233,7 @@ public class CrimeFragment extends Fragment {
                         .query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                                 null,
                                 ContactsContract.Contacts.LOOKUP_KEY + " = ?",
-                                new String[] {mCrime.getContactID()},
+                                new String[]{mCrime.getContactID()},
                                 null
                         );
                 String phoneNumber = "";
@@ -244,6 +260,12 @@ public class CrimeFragment extends Fragment {
 
         // If there is no suspect, disable the call button
         if (mCrime.getSuspect() == null) {
+            mCallSuspectButton.setEnabled(false);
+        }
+
+        // If there is no read contacts permission, disable the call button
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.READ_CONTACTS}, READ_CONTACTS_REQUEST_CODE);
             mCallSuspectButton.setEnabled(false);
         }
 
