@@ -65,13 +65,21 @@ public class CrimeFragment extends Fragment {
             Uri contactUri = data.getData();
 
             // Specify which fields you want your query to return values for
+            // Use ContactsContract.Contacts.LOOKUP_KEY instead of _ID because _ID can change
+            // as contacts are consolidated, etc.
             String[] queryFields = new String[] {
-                    ContactsContract.Contacts._ID,
+                    ContactsContract.Contacts.LOOKUP_KEY,
                     ContactsContract.Contacts.DISPLAY_NAME
             };
 
             // Perform your query - the contactUri is like a "where" clause here
-            Cursor c = getActivity().getContentResolver().query(contactUri, queryFields, null, null, null);
+            Cursor c = getActivity().getContentResolver().query(
+                    contactUri,
+                    queryFields,
+                    null,
+                    null,
+                    null
+            );
 
             try {
                 // Double check that you actually got results
@@ -81,7 +89,7 @@ public class CrimeFragment extends Fragment {
 
                 // Pull out the two columns of the first row of data - that is your contact ID and name
                 c.moveToFirst();
-                mCrime.setSuspectID(c.getString(0));
+                mCrime.setContactID(c.getString(0));
                 String suspect = c.getString(1);
                 mCrime.setSuspect(suspect);
                 mSuspectButton.setText(suspect);
@@ -208,8 +216,8 @@ public class CrimeFragment extends Fragment {
                 Cursor phoneNumberCursor = getContext().getContentResolver()
                         .query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                                 null,
-                                ContactsContract.Contacts._ID + " = ?",
-                                new String[] {mCrime.getSuspectID()},
+                                ContactsContract.Contacts.LOOKUP_KEY + " = ?",
+                                new String[] {mCrime.getContactID()},
                                 null
                         );
                 String phoneNumber = "";
