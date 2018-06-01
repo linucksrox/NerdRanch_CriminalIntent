@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -92,6 +93,16 @@ public class CrimeFragment extends Fragment {
             } finally {
                 c.close();
             }
+        } else if (requestCode == REQUEST_PHOTO) {
+            // Now that the camera is done writing the image to our private storage space,
+            // revoke the write permission.
+            Uri uri = FileProvider.getUriForFile(getActivity(),
+                    "com.dalydays.android.criminalintent.fileprovider",
+                    mPhotoFile);
+
+            getActivity().revokeUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+            updatePhotoView();
         }
     }
 
@@ -120,6 +131,15 @@ public class CrimeFragment extends Fragment {
         String report = getString(R.string.crime_report, mCrime.getTitle(), dateString, solvedString, suspect);
 
         return report;
+    }
+
+    private void updatePhotoView() {
+        if (mPhotoFile == null || !mPhotoFile.exists()) {
+            mPhotoView.setImageDrawable(null);
+        } else {
+            Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), getActivity());
+            mPhotoView.setImageBitmap(bitmap);
+        }
     }
 
     @Override
@@ -236,7 +256,9 @@ public class CrimeFragment extends Fragment {
                 startActivityForResult(captureImage, REQUEST_PHOTO);
             }
         });
+
         mPhotoView = v.findViewById(R.id.crime_photo);
+        updatePhotoView();
 
         return v;
     }
