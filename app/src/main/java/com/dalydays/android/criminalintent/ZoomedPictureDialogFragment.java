@@ -46,7 +46,7 @@ public class ZoomedPictureDialogFragment extends DialogFragment {
             mZoomedPhotoView.setImageDrawable(null);
         } else {
             Log.d(LOG_TAG, "width: " + mZoomedPhotoView.getWidth());
-            Bitmap bitmap = PictureUtils.getScaledBitmap(imageFile.getPath(), mZoomedPhotoView.getWidth(), mZoomedPhotoView.getHeight());
+            Bitmap bitmap = PictureUtils.getScaledBitmap(imageFile.getPath(), getActivity());
             mZoomedPhotoView.setImageBitmap(bitmap);
         }
 
