@@ -13,7 +13,12 @@ import android.support.v7.app.AppCompatActivity;
 import java.util.List;
 import java.util.UUID;
 
-public class CrimePagerActivity extends AppCompatActivity {
+public class CrimePagerActivity extends AppCompatActivity
+        implements CrimeFragment.Callbacks {
+    @Override
+    public void onCrimeUpdated(Crime crime) {
+
+    }
 
     private ViewPager mViewPager;
     private List<Crime> mCrimes;
