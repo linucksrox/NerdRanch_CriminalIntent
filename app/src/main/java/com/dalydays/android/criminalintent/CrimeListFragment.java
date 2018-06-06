@@ -121,13 +121,9 @@ public class CrimeListFragment extends Fragment {
             mDateTextView.setText(mCrime.getDate().toString());
             mDateTextView.setContentDescription(getString(R.string.date_picker_title) + " " + mCrime.getDate().toString());
             mSolvedImageView.setVisibility(crime.isSolved() ? View.VISIBLE : View.GONE);
-            String solvedContentDescription = getString(R.string.crime_solved_label) + " ";
             if (crime.isSolved()) {
-                solvedContentDescription += "solved";
-            } else {
-                solvedContentDescription += "not solved";
+                mSolvedImageView.setContentDescription(getString(R.string.crime_solved_content_description));
             }
-            mSolvedImageView.setContentDescription(solvedContentDescription);
         }
 
         @Override
