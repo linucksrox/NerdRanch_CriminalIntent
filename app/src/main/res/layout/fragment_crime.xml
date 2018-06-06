@@ -47,14 +47,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/crime_title_label"
-                tools:text="Crime Title" />
+                tools:text="Crime Title"
+                android:labelFor="@id/crime_title"/>
 
             <EditText
                 android:id="@+id/crime_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/crime_title_hint"
-                tools:text="Crime Title Hint" />
+                tools:text="Crime Title Hint"/>
 
         </LinearLayout>
     </LinearLayout>
