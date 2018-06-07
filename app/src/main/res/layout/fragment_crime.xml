@@ -71,7 +71,8 @@
         android:id="@+id/crime_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="Sun May 12, 2018" />
+        tools:text="Sun May 12, 2018"
+        android:contentDescription="@string/date_of_crime_content_description"/>
 
     <CheckBox
         android:id="@+id/crime_solved"

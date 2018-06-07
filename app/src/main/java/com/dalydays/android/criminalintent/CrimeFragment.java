@@ -107,6 +107,7 @@ public class CrimeFragment extends Fragment {
                 mCrime.setSuspect(suspect);
                 updateCrime();
                 mSuspectButton.setText(suspect);
+                mSuspectButton.setContentDescription(getString(R.string.suspect_is_content_description) + suspect);
             } finally {
                 c.close();
             }
@@ -237,6 +238,7 @@ public class CrimeFragment extends Fragment {
 
         final Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         mSuspectButton = v.findViewById(R.id.choose_suspect);
+        mSuspectButton.setContentDescription(getString(R.string.choose_suspect_content_description));
         mSuspectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

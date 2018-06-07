@@ -24,4 +24,7 @@
     <string name="crime_report_subject">CriminalIntent Crime Report</string>
     <string name="send_report">Send crime report via</string>
     <string name="crime_solved_content_description">Crime is solved</string>
+    <string name="choose_suspect_content_description">Choose Suspect</string>
+    <string name="suspect_is_content_description">Suspect is</string>
+    <string name="date_of_crime_content_description">Date of crime</string>
 </resources>
