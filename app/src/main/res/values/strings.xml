@@ -27,4 +27,5 @@
     <string name="choose_suspect_content_description">Choose Suspect</string>
     <string name="suspect_is_content_description">Suspect is</string>
     <string name="date_of_crime_content_description">Date of crime</string>
+    <string name="suspect_image_taken_accessibility">New suspect image was taken</string>
 </resources>

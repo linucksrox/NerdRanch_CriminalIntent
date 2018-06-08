@@ -120,6 +120,14 @@ public class CrimeFragment extends Fragment {
 
             getActivity().revokeUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
+            // Announce that we have a new image for accessibility
+            mPhotoView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mPhotoView.announceForAccessibility(getString(R.string.suspect_image_taken_accessibility));
+                }
+            }, 1000);
+
             updateCrime();
             updatePhotoView();
         }
